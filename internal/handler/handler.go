@@ -18,6 +18,15 @@ func NewHandler(storage *storage.Storage) *Handler {
 	return &Handler{storage: storage}
 }
 
+// GetStudent handles GET /student/:id
+// @Summary Get student details
+// @Tags Student
+// @Description Get detailed information about a student
+// @Accept json
+// @Produce json
+// @Param id path int true "Student ID"
+// @Success 200 {object} model.ServerResponse
+// @Router /student/{id} [get]
 func (h *Handler) GetStudent(c echo.Context) error {
 	id := c.Param("id")
 
@@ -35,6 +44,14 @@ func (h *Handler) GetStudent(c echo.Context) error {
 	})
 }
 
+// GetAllSchedule handles GET /all_class_schedule
+// @Summary Get all schedules
+// @Tags Schedule
+// @Description Get the entire schedule
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.ServerResponse
+// @Router /all_class_schedule [get]
 func (h *Handler) GetAllSchedule(c echo.Context) error {
 	results, err := h.storage.GetAllSchedule(c.Request().Context())
 	if err != nil {
@@ -50,6 +67,15 @@ func (h *Handler) GetAllSchedule(c echo.Context) error {
 	})
 }
 
+// GetGroupSchedule handles GET /schedule/group/:id
+// @Summary Get group schedule
+// @Tags Schedule
+// @Description Get schedule for a specific group
+// @Accept json
+// @Produce json
+// @Param id path int true "Group ID"
+// @Success 200 {object} model.ServerResponse
+// @Router /schedule/group/{id} [get]
 func (h *Handler) GetGroupSchedule(c echo.Context) error {
 	id := c.Param("id")
 
@@ -67,6 +93,15 @@ func (h *Handler) GetGroupSchedule(c echo.Context) error {
 	})
 }
 
+// MarkAttendance handles POST /attendance/subject
+// @Summary Mark attendance
+// @Tags Attendance
+// @Description Record attendance for a student
+// @Accept json
+// @Produce json
+// @Param input body model.Attendance true "Attendance Data"
+// @Success 200 {object} model.ServerResponse
+// @Router /attendance/subject [post]
 func (h *Handler) MarkAttendance(ctx echo.Context) error {
 	var request model.Attendance
 
@@ -88,6 +123,15 @@ func (h *Handler) MarkAttendance(ctx echo.Context) error {
 	})
 }
 
+// GetAttendanceBySubjectId handles GET /attendanceBySubjectId/:id
+// @Summary Get attendance by subject
+// @Tags Attendance
+// @Description Get attendance records for a specific subject
+// @Accept json
+// @Produce json
+// @Param id path int true "Subject ID"
+// @Success 200 {object} model.ServerResponse
+// @Router /attendanceBySubjectId/{id} [get]
 func (h *Handler) GetAttendanceBySubjectId(c echo.Context) error {
 	id := c.Param("id")
 
@@ -105,6 +149,15 @@ func (h *Handler) GetAttendanceBySubjectId(c echo.Context) error {
 	})
 }
 
+// GetAttendanceByStudentId handles GET /attendanceByStudentId/:id
+// @Summary Get attendance by student
+// @Tags Attendance
+// @Description Get attendance records for a specific student
+// @Accept json
+// @Produce json
+// @Param id path int true "Student ID"
+// @Success 200 {object} model.ServerResponse
+// @Router /attendanceByStudentId/{id} [get]
 func (h *Handler) GetAttendanceByStudentId(c echo.Context) error {
 	id := c.Param("id")
 
@@ -122,7 +175,14 @@ func (h *Handler) GetAttendanceByStudentId(c echo.Context) error {
 	})
 }
 
-// statistics about group sizes
+// GetGroupStudentCounts handles GET /analytics/groups
+// @Summary Get group sizes
+// @Tags Analytics
+// @Description Get student counts per group
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.ServerResponse
+// @Router /analytics/groups [get]
 func (h *Handler) GetGroupStudentCounts(c echo.Context) error {
 	stats, err := h.storage.GetGroupStudentCounts(c.Request().Context())
 	if err != nil {
@@ -138,7 +198,15 @@ func (h *Handler) GetGroupStudentCounts(c echo.Context) error {
 	})
 }
 
-// students with absences >= min (default 1)
+// GetStudentsWithAbsences handles GET /analytics/absences
+// @Summary Get students with absences
+// @Tags Analytics
+// @Description Get students who have more than a minimum number of absences
+// @Accept json
+// @Produce json
+// @Param min query int false "Minimum Absences" default(1)
+// @Success 200 {object} model.ServerResponse
+// @Router /analytics/absences [get]
 func (h *Handler) GetStudentsWithAbsences(c echo.Context) error {
 	minStr := c.QueryParam("min")
 	min := 1

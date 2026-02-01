@@ -9,6 +9,182 @@
     "host": "localhost:1323",
     "basePath": "/api",
     "paths": {
+        "/all_class_schedule": {
+            "get": {
+                "description": "Get the entire schedule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Get all schedules",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/HW_5_internal_model.ServerResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/absences": {
+            "get": {
+                "description": "Get students who have more than a minimum number of absences",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Get students with absences",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Minimum Absences",
+                        "name": "min",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/HW_5_internal_model.ServerResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/groups": {
+            "get": {
+                "description": "Get student counts per group",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Get group sizes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/HW_5_internal_model.ServerResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/attendance/subject": {
+            "post": {
+                "description": "Record attendance for a student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Mark attendance",
+                "parameters": [
+                    {
+                        "description": "Attendance Data",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/HW_5_internal_model.Attendance"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/HW_5_internal_model.ServerResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/attendanceByStudentId/{id}": {
+            "get": {
+                "description": "Get attendance records for a specific student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Get attendance by student",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Student ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/HW_5_internal_model.ServerResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/attendanceBySubjectId/{id}": {
+            "get": {
+                "description": "Get attendance records for a specific subject",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Get attendance by subject",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Subject ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/HW_5_internal_model.ServerResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "description": "Login with email and password to get JWT token",
@@ -256,6 +432,70 @@
                 }
             }
         },
+        "/schedule/group/{id}": {
+            "get": {
+                "description": "Get schedule for a specific group",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Schedule"
+                ],
+                "summary": "Get group schedule",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Group ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/HW_5_internal_model.ServerResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/student/{id}": {
+            "get": {
+                "description": "Get detailed information about a student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Student"
+                ],
+                "summary": "Get student details",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Student ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/HW_5_internal_model.ServerResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/users/me": {
             "get": {
                 "security": [
@@ -283,6 +523,23 @@
         }
     },
     "definitions": {
+        "HW_5_internal_model.Attendance": {
+            "type": "object",
+            "properties": {
+                "student_id": {
+                    "type": "integer"
+                },
+                "subject_id": {
+                    "type": "integer"
+                },
+                "visit_day": {
+                    "type": "string"
+                },
+                "visited": {
+                    "type": "boolean"
+                }
+            }
+        },
         "HW_5_internal_model.LoginRequest": {
             "type": "object",
             "properties": {

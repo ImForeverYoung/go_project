@@ -1,5 +1,16 @@
 basePath: /api
 definitions:
+  HW_5_internal_model.Attendance:
+    properties:
+      student_id:
+        type: integer
+      subject_id:
+        type: integer
+      visit_day:
+        type: string
+      visited:
+        type: boolean
+    type: object
   HW_5_internal_model.LoginRequest:
     properties:
       email:
@@ -42,6 +53,121 @@ info:
   title: University API
   version: "1.0"
 paths:
+  /all_class_schedule:
+    get:
+      consumes:
+      - application/json
+      description: Get the entire schedule
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      summary: Get all schedules
+      tags:
+      - Schedule
+  /analytics/absences:
+    get:
+      consumes:
+      - application/json
+      description: Get students who have more than a minimum number of absences
+      parameters:
+      - default: 1
+        description: Minimum Absences
+        in: query
+        name: min
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      summary: Get students with absences
+      tags:
+      - Analytics
+  /analytics/groups:
+    get:
+      consumes:
+      - application/json
+      description: Get student counts per group
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      summary: Get group sizes
+      tags:
+      - Analytics
+  /attendance/subject:
+    post:
+      consumes:
+      - application/json
+      description: Record attendance for a student
+      parameters:
+      - description: Attendance Data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/HW_5_internal_model.Attendance'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      summary: Mark attendance
+      tags:
+      - Attendance
+  /attendanceByStudentId/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get attendance records for a specific student
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      summary: Get attendance by student
+      tags:
+      - Attendance
+  /attendanceBySubjectId/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get attendance records for a specific subject
+      parameters:
+      - description: Subject ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      summary: Get attendance by subject
+      tags:
+      - Attendance
   /auth/login:
     post:
       consumes:
@@ -196,6 +322,48 @@ paths:
       summary: Update a professor
       tags:
       - Professors
+  /schedule/group/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get schedule for a specific group
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      summary: Get group schedule
+      tags:
+      - Schedule
+  /student/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about a student
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      summary: Get student details
+      tags:
+      - Student
   /users/me:
     get:
       description: Get details of the currently logged-in user
