@@ -363,8 +363,6 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "API for University Management System",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-	LeftDelim:        "{{",
-	RightDelim:       "}}",
 }
 
 func init() {
