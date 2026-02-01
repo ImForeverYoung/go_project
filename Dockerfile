@@ -27,7 +27,7 @@ RUN apk --no-cache add ca-certificates
 
 # Copy binary from builder
 COPY --from=builder /app/main .
-COPY --from=builder /app/.env .env
+
 
 # Expose port
 EXPOSE 1323
