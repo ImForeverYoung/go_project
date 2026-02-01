@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: hw5-web
+    env: docker
+    plan: free
+    buildCommand: docker build -t app .
+    startCommand: ./main
+    envVars:
+      - key: DB_URL
+        sync: false 
+      - key: JWT_SECRET
+        generateValue: true
