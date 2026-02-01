@@ -8,7 +8,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// POST /api/professors
+// CreateProfessor handles POST /api/professors
+// @Summary Create a new professor
+// @Tags Professors
+// @Security ApiKeyAuth
+// @Accept json
+// @Produce json
+// @Param input body model.ProfessorRequest true "Professor Data"
+// @Success 201 {object} model.ServerResponse
+// @Router /professors [post]
 func (h *Handler) CreateProfessor(c echo.Context) error {
 	var req model.ProfessorRequest
 	if err := c.Bind(&req); err != nil {
@@ -26,7 +34,14 @@ func (h *Handler) CreateProfessor(c echo.Context) error {
 	})
 }
 
-// GET /api/professors/:id
+// GetProfessor handles GET /api/professors/:id
+// @Summary Get a professor by ID
+// @Tags Professors
+// @Security ApiKeyAuth
+// @Produce json
+// @Param id path int true "Professor ID"
+// @Success 200 {object} model.ServerResponse
+// @Router /professors/{id} [get]
 func (h *Handler) GetProfessor(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -44,7 +59,13 @@ func (h *Handler) GetProfessor(c echo.Context) error {
 	})
 }
 
-// GET /api/professors
+// ListProfessors handles GET /api/professors
+// @Summary List all professors
+// @Tags Professors
+// @Security ApiKeyAuth
+// @Produce json
+// @Success 200 {object} model.ServerResponse
+// @Router /professors [get]
 func (h *Handler) ListProfessors(c echo.Context) error {
 	profs, err := h.storage.ListProfessors(c.Request().Context())
 	if err != nil {
@@ -57,7 +78,16 @@ func (h *Handler) ListProfessors(c echo.Context) error {
 	})
 }
 
-// PUT /api/professors/:id
+// UpdateProfessor handles PUT /api/professors/:id
+// @Summary Update a professor
+// @Tags Professors
+// @Security ApiKeyAuth
+// @Accept json
+// @Produce json
+// @Param id path int true "Professor ID"
+// @Param input body model.ProfessorRequest true "Updated Data"
+// @Success 200 {object} model.ServerResponse
+// @Router /professors/{id} [put]
 func (h *Handler) UpdateProfessor(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -76,7 +106,14 @@ func (h *Handler) UpdateProfessor(c echo.Context) error {
 	return c.JSON(http.StatusOK, model.ServerResponse{Status: "success", Message: "Professor updated"})
 }
 
-// DELETE /api/professors/:id
+// DeleteProfessor handles DELETE /api/professors/:id
+// @Summary Delete a professor
+// @Tags Professors
+// @Security ApiKeyAuth
+// @Produce json
+// @Param id path int true "Professor ID"
+// @Success 200 {object} model.ServerResponse
+// @Router /professors/{id} [delete]
 func (h *Handler) DeleteProfessor(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

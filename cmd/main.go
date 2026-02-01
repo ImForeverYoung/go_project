@@ -8,13 +8,25 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	echoSwagger "github.com/swaggo/echo-swagger"
 
 	"HW_5/internal/handler"
 	"HW_5/internal/middleware"
 	"HW_5/internal/storage"
 	"HW_5/internal/usecase"
+
+	_ "HW_5/docs" // Setup for Swagger
 )
 
+// @title University API
+// @version 1.0
+// @description API for University Management System
+// @host localhost:1323
+// @BasePath /api
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	godotenv.Load()
 
@@ -73,6 +85,9 @@ func main() {
 	e.GET("/health", func(c echo.Context) error {
 		return c.String(200, "OK")
 	})
+
+	// Swagger
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

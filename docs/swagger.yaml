@@ -1,0 +1,219 @@
+basePath: /api
+definitions:
+  HW_5_internal_model.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  HW_5_internal_model.ProfessorRequest:
+    properties:
+      department:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      title:
+        type: string
+    type: object
+  HW_5_internal_model.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  HW_5_internal_model.ServerResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+host: localhost:1323
+info:
+  contact: {}
+  description: API for University Management System
+  title: University API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login with email and password to get JWT token
+      parameters:
+      - description: Login Input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/HW_5_internal_model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      summary: Login user
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with username, email and password
+      parameters:
+      - description: Register Input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/HW_5_internal_model.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      summary: Register a new user
+      tags:
+      - Auth
+  /professors:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: List all professors
+      tags:
+      - Professors
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Professor Data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/HW_5_internal_model.ProfessorRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new professor
+      tags:
+      - Professors
+  /professors/{id}:
+    delete:
+      parameters:
+      - description: Professor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a professor
+      tags:
+      - Professors
+    get:
+      parameters:
+      - description: Professor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a professor by ID
+      tags:
+      - Professors
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Professor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated Data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/HW_5_internal_model.ProfessorRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a professor
+      tags:
+      - Professors
+  /users/me:
+    get:
+      description: Get details of the currently logged-in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/HW_5_internal_model.ServerResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get current user info
+      tags:
+      - Users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
